@@ -90,4 +90,14 @@ public class Assignment {
         return plannedDays * negotiatedDailyRate;
     }
 
+    public boolean isActiveOn(LocalDate date) {
+        if (date == null || startDate == null || endDate == null || status == null) {
+            return false;
+        }
+
+        return status == AssignmentStatus.ACTIVE
+                && !date.isBefore(startDate)
+                && !date.isAfter(endDate);
+    }
+
 }
