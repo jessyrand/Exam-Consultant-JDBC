@@ -77,4 +77,22 @@ public class Timesheet {
                 .sum();
     }
 
+    public boolean hasOverloadedDay() {
+        if (entries == null) {
+            return false;
+        }
+
+        return entries.stream()
+                .map(TimesheetEntry::getDate)
+                .distinct()
+                .anyMatch(date -> {
+                    double totalForDate = entries.stream()
+                            .filter(entry -> date.equals(entry.getDate()))
+                            .mapToDouble(TimesheetEntry::getDayFraction)
+                            .sum();
+
+                    return totalForDate > 1.0;
+                });
+    }
+
 }
