@@ -45,9 +45,9 @@ public class DataRetriever {
 
         try (Connection connection = dbConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("""
-                select id, name, grade
-                from consultant
-                """);
+                    select id, name, grade
+                    from consultant
+                    """);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -75,10 +75,10 @@ public class DataRetriever {
 
         try (Connection connection = dbConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("""
-                select id, name, grade
-                from consultant
-                where grade = ?
-                """);
+                    select id, name, grade
+                    from consultant
+                    where grade = ?
+                    """);
 
             preparedStatement.setString(1, grade.name());
 
@@ -108,10 +108,10 @@ public class DataRetriever {
 
         try (Connection connection = dbConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("""
-                select id, description, start_date, end_date
-                from mission
-                where id = ?
-                """);
+                    select id, description, start_date, end_date
+                    from mission
+                    where id = ?
+                    """);
 
             preparedStatement.setString(1, id);
 
@@ -143,9 +143,9 @@ public class DataRetriever {
 
         try (Connection connection = dbConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("""
-                select id, description, start_date, end_date
-                from mission
-                """);
+                    select id, description, start_date, end_date
+                    from mission
+                    """);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -177,11 +177,11 @@ public class DataRetriever {
 
         try (Connection connection = dbConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("""
-                select id, description, start_date, end_date
-                from mission
-                where start_date <= ?
-                and (end_date is null or end_date >= ?)
-                """);
+                    select id, description, start_date, end_date
+                    from mission
+                    where start_date <= ?
+                    and (end_date is null or end_date >= ?)
+                    """);
 
             preparedStatement.setDate(1, java.sql.Date.valueOf(date));
             preparedStatement.setDate(2, java.sql.Date.valueOf(date));
@@ -216,12 +216,12 @@ public class DataRetriever {
 
         try (Connection connection = dbConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("""
-                select mission_id, consultant_id, planned_days, negotiated_daily_rate,
-                       start_date, end_date, status, created_at
-                from assignment
-                where mission_id = ?
-                and consultant_id = ?
-                """);
+                    select mission_id, consultant_id, planned_days, negotiated_daily_rate,
+                           start_date, end_date, status, created_at
+                    from assignment
+                    where mission_id = ?
+                    and consultant_id = ?
+                    """);
 
             preparedStatement.setString(1, missionId);
             preparedStatement.setString(2, consultantId);
@@ -255,13 +255,52 @@ public class DataRetriever {
 
         try (Connection connection = dbConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("""
-                select mission_id, consultant_id, planned_days, negotiated_daily_rate,
-                       start_date, end_date, status, created_at
-                from assignment
-                where mission_id = ?
-                """);
+                    select mission_id, consultant_id, planned_days, negotiated_daily_rate,
+                           start_date, end_date, status, created_at
+                    from assignment
+                    where mission_id = ?
+                    """);
 
             preparedStatement.setString(1, missionId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Assignment> assignments = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Assignment assignment = new Assignment();
+
+                assignment.setMission(findMissionById(resultSet.getString("mission_id")));
+                assignment.setConsultant(findConsultantById(resultSet.getString("consultant_id")));
+                assignment.setPlannedDays(resultSet.getInt("planned_days"));
+                assignment.setNegotiatedDailyRate(resultSet.getLong("negotiated_daily_rate"));
+                assignment.setStartDate(resultSet.getDate("start_date").toLocalDate());
+                assignment.setEndDate(resultSet.getDate("end_date").toLocalDate());
+                assignment.setStatus(AssignmentStatus.valueOf(resultSet.getString("status")));
+                assignment.setCreatedAt(resultSet.getTimestamp("created_at").toInstant());
+
+                assignments.add(assignment);
+            }
+
+            return assignments;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Assignment> findAssignmentsByConsultant(String consultantId) {
+        DBConnection dbConnection = new DBConnection();
+
+        try (Connection connection = dbConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("""
+                    select mission_id, consultant_id, planned_days, negotiated_daily_rate,
+                           start_date, end_date, status, created_at
+                    from assignment
+                    where consultant_id = ?
+                    """);
+
+            preparedStatement.setString(1, consultantId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -294,10 +333,10 @@ public class DataRetriever {
 
         try (Connection connection = dbConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("""
-                select mission_id, consultant_id, planned_days, negotiated_daily_rate,
-                       start_date, end_date, status, created_at
-                from assignment
-                """);
+                    select mission_id, consultant_id, planned_days, negotiated_daily_rate,
+                           start_date, end_date, status, created_at
+                    from assignment
+                    """);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
