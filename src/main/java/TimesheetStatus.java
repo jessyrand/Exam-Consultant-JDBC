@@ -1,4 +1,6 @@
-package PACKAGE_NAME;
-
 public enum TimesheetStatus {
+    DRAFT,
+    SUBMITTED,
+    VALIDATED,
+    REJECTED
 }
