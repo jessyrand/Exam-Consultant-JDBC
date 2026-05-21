@@ -67,4 +67,14 @@ public class Timesheet {
                 .sum();
     }
 
+    public double totalDays() {
+        if (entries == null) {
+            return 0;
+        }
+
+        return entries.stream()
+                .mapToDouble(TimesheetEntry::getDayFraction)
+                .sum();
+    }
+
 }
