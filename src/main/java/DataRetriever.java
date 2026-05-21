@@ -136,4 +136,38 @@ public class DataRetriever {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Mission> findAllMissions() {
+        DBConnection dbConnection = new DBConnection();
+
+        try (Connection connection = dbConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("""
+                select id, description, start_date, end_date
+                from mission
+                """);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Mission> missions = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Mission mission = new Mission();
+
+                mission.setId(resultSet.getString("id"));
+                mission.setDescription(resultSet.getString("description"));
+                mission.setStartDate(resultSet.getDate("start_date").toLocalDate());
+
+                if (resultSet.getDate("end_date") != null) {
+                    mission.setEndDate(resultSet.getDate("end_date").toLocalDate());
+                }
+
+                missions.add(mission);
+            }
+
+            return missions;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
