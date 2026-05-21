@@ -102,4 +102,18 @@ public class Assignment {
                 && !date.isAfter(endDate);
     }
 
+    @Override
+    public String toString() {
+        return "Assignment{" +
+                "mission=" + mission +
+                ", consultant=" + consultant +
+                ", plannedDays=" + plannedDays +
+                ", negotiatedDailyRate=" + negotiatedDailyRate +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+
 }

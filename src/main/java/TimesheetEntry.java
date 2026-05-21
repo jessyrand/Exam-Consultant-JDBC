@@ -36,4 +36,13 @@ public class TimesheetEntry {
     public void setDayFraction(double dayFraction) {
         this.dayFraction = dayFraction;
     }
+
+    @Override
+    public String toString() {
+        return "TimesheetEntry{" +
+                "date=" + date +
+                ", missionId='" + missionId + '\'' +
+                ", dayFraction=" + dayFraction +
+                '}';
+    }
 }

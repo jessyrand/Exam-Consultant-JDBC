@@ -97,4 +97,15 @@ public class Timesheet {
                 });
     }
 
+    @Override
+    public String toString() {
+        return "Timesheet{" +
+                "consultantId='" + consultantId + '\'' +
+                ", week='" + week + '\'' +
+                ", status=" + status +
+                ", submittedDate=" + submittedDate +
+                ", entries=" + entries +
+                '}';
+    }
+
 }

@@ -35,4 +35,13 @@ public class Consultant {
         this.grade = grade;
     }
 
+    @Override
+    public String toString() {
+        return "Consultant{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", grade=" + grade +
+                '}';
+    }
+
 }

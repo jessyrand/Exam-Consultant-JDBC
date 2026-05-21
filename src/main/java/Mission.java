@@ -47,4 +47,13 @@ public class Mission {
         this.endDate = endDate;
     }
 
+    @Override
+    public String toString() {
+        return "Mission{" +
+                "id='" + id + '\'' +
+                ", description='" + description + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }
