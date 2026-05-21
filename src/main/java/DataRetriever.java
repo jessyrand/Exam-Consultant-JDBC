@@ -101,4 +101,39 @@ public class DataRetriever {
             throw new RuntimeException(e);
         }
     }
+
+    public Mission findMissionById(String id) {
+        DBConnection dbConnection = new DBConnection();
+
+        try (Connection connection = dbConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("""
+                select id, description, start_date, end_date
+                from mission
+                where id = ?
+                """);
+
+            preparedStatement.setString(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Mission mission = new Mission();
+
+                mission.setId(resultSet.getString("id"));
+                mission.setDescription(resultSet.getString("description"));
+                mission.setStartDate(resultSet.getDate("start_date").toLocalDate());
+
+                if (resultSet.getDate("end_date") != null) {
+                    mission.setEndDate(resultSet.getDate("end_date").toLocalDate());
+                }
+
+                return mission;
+            }
+
+            throw new RuntimeException("Mission not found with id " + id);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
