@@ -289,4 +289,43 @@ public class DataRetriever {
         }
     }
 
+    public List<Assignment> findAssignmentsByConsultant(String consultantId) {
+        DBConnection dbConnection = new DBConnection();
+
+        try (Connection connection = dbConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("""
+                select mission_id, consultant_id, planned_days, negotiated_daily_rate,
+                       start_date, end_date, status, created_at
+                from assignment
+                where consultant_id = ?
+                """);
+
+            preparedStatement.setString(1, consultantId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Assignment> assignments = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Assignment assignment = new Assignment();
+
+                assignment.setMission(findMissionById(resultSet.getString("mission_id")));
+                assignment.setConsultant(findConsultantById(resultSet.getString("consultant_id")));
+                assignment.setPlannedDays(resultSet.getInt("planned_days"));
+                assignment.setNegotiatedDailyRate(resultSet.getLong("negotiated_daily_rate"));
+                assignment.setStartDate(resultSet.getDate("start_date").toLocalDate());
+                assignment.setEndDate(resultSet.getDate("end_date").toLocalDate());
+                assignment.setStatus(AssignmentStatus.valueOf(resultSet.getString("status")));
+                assignment.setCreatedAt(resultSet.getTimestamp("created_at").toInstant());
+
+                assignments.add(assignment);
+            }
+
+            return assignments;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
