@@ -9,11 +9,11 @@ public class Assignment {
     private LocalDate startDate;
     private LocalDate endDate;
     private AssignmentStatus status;
-    private Instant creationDate;
+    private Instant createdAt;
 
     public Assignment() {}
 
-    public Assignment(Mission mission, Consultant consultant, int plannedDays, long negotiatedDailyRate, LocalDate startDate, LocalDate endDate, AssignmentStatus status, Instant creationDate) {
+    public Assignment(Mission mission, Consultant consultant, int plannedDays, long negotiatedDailyRate, LocalDate startDate, LocalDate endDate, AssignmentStatus status, Instant createdAt) {
         this.mission = mission;
         this.consultant = consultant;
         this.plannedDays = plannedDays;
@@ -21,7 +21,7 @@ public class Assignment {
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
-        this.creationDate = creationDate;
+        this.createdAt = createdAt;
     }
 
     public int getPlannedDays() {
@@ -80,12 +80,12 @@ public class Assignment {
         this.status = status;
     }
 
-    public Instant getCreationDate() {
-        return creationDate;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreationDate(Instant creationDate) {
-        this.creationDate = creationDate;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
     public long computeMaxBillableAmount() {
