@@ -5,6 +5,8 @@ public class TimesheetEntry {
     private String missionId;
     private double dayFraction;
 
+    public TimesheetEntry() {}
+
     public TimesheetEntry(LocalDate date, String missionId, double dayFraction) {
         this.date = date;
         this.missionId = missionId;

@@ -6,6 +6,8 @@ public class Mission {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    public Mission() {}
+
     public Mission(String id, String description, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.description = description;

@@ -8,6 +8,8 @@ public class Timesheet {
     private Instant submittedDate;
     private List<TimesheetEntry> entries;
 
+    public Timesheet() {}
+
     public Timesheet(String consultantId, String week, TimesheetStatus status, Instant submittedDate, List<TimesheetEntry> entries) {
         this.consultantId = consultantId;
         this.week = week;

@@ -3,6 +3,8 @@ public class Consultant {
     private String name;
     private Grade grade;
 
+    public Consultant() {}
+
     public Consultant(String id, String name, Grade grade) {
         this.id = id;
         this.name = name;

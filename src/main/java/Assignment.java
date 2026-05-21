@@ -11,6 +11,8 @@ public class Assignment {
     private AssignmentStatus status;
     private Instant creationDate;
 
+    public Assignment() {}
+
     public Assignment(Mission mission, Consultant consultant, int plannedDays, long negotiatedDailyRate, LocalDate startDate, LocalDate endDate, AssignmentStatus status, Instant creationDate) {
         this.mission = mission;
         this.consultant = consultant;
