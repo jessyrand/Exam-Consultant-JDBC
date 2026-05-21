@@ -85,4 +85,9 @@ public class Assignment {
     public void setCreationDate(Instant creationDate) {
         this.creationDate = creationDate;
     }
+
+    public long computeMaxBillableAmount() {
+        return plannedDays * negotiatedDailyRate;
+    }
+
 }
