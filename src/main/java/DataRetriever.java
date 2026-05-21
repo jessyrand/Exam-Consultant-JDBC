@@ -289,7 +289,7 @@ public class DataRetriever {
         }
     }
 
-    public List<Assignment> findAssignmentsByConsultant(String consultantId) {
+    public List<Assignment> findAllActiveAssignments() {
         DBConnection dbConnection = new DBConnection();
 
         try (Connection connection = dbConnection.getConnection()) {
@@ -297,10 +297,7 @@ public class DataRetriever {
                 select mission_id, consultant_id, planned_days, negotiated_daily_rate,
                        start_date, end_date, status, created_at
                 from assignment
-                where consultant_id = ?
                 """);
-
-            preparedStatement.setString(1, consultantId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -318,7 +315,9 @@ public class DataRetriever {
                 assignment.setStatus(AssignmentStatus.valueOf(resultSet.getString("status")));
                 assignment.setCreatedAt(resultSet.getTimestamp("created_at").toInstant());
 
-                assignments.add(assignment);
+                if (assignment.isActiveOn(LocalDate.now())) {
+                    assignments.add(assignment);
+                }
             }
 
             return assignments;
