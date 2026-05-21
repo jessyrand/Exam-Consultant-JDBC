@@ -56,4 +56,15 @@ public class Timesheet {
         this.entries = entries;
     }
 
+    public double totalDaysOnMission(String missionId) {
+        if (missionId == null || entries == null) {
+            return 0;
+        }
+
+        return entries.stream()
+                .filter(entry -> missionId.equals(entry.getMissionId()))
+                .mapToDouble(TimesheetEntry::getDayFraction)
+                .sum();
+    }
+
 }
